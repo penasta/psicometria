@@ -32,7 +32,7 @@ always_allow_html: yes
   `r format(Sys.time(), '%d %B %Y')`}
 \vskip 3em
 {\LARGE
-  \textbf{Dia 1}} \\
+  \textbf{Semana Universitária - SEMUNI}} \\
 \vskip 5em
 {\Large
   Prof. Dr. Luis do Amaral Vinha} \\
@@ -56,6 +56,7 @@ always_allow_html: yes
 
 ```{r setup, include=F}
 source("source/packages.R")
-p_load(knitr,ggplot2,reshape2,gridExtra)
+p_load(tidyverse)
 ```
+
 
