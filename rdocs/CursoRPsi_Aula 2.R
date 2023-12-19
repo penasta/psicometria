@@ -8,16 +8,18 @@ source("rdocs/source/packages.R")
 
 p_load(readxl,psych)
 
-
 # An?lise Fatorial Explorat?ria e Alfa de Cronbach
 
 # Importando arquivo exemploAF.xlsx
 
 dados=read_excel("rdocs/dados/exemploAF.xlsx")
 
+
+
 str(dados)
 
 table(dados$X1)
+
 
 # Correla??es
 
@@ -42,20 +44,20 @@ summary(fit)
 fit$e.values
 
 # Scree plot 1
-
+#windows()
 plot(fit$e.values,type="o",  ylim = c(0, 6),
      xlab="Componente", ylab="Autovalor")
-
 
 # An?lise paralela
 
 paralela=fa.parallel(dados,nfactors=4, fa="pc", error.bars=TRUE,
                      main="An?lise Paralela", n.iter=20,
                      ylabel=NULL,show.legend=TRUE,
-                     sim=TRUE,quant=.95,cor="cor",
+                     sim=TRUE,quant=.95,cor="poly", # ou cor = "cor"
                      use="pairwise",plot=TRUE,correct=.5)
 
-dados=conjunto1
+
+#dados=conjunto1
 
 # N?mero de vari?veis
 nvar=dim(dados)[2]
@@ -77,7 +79,7 @@ AF1 <- fa(dados, nfactors=3, rotate="Promax", cor=TRUE)
 
 summary(AF1)
 
-AF1
+print(AF1,sort=T)
 
 
 # Extraindo as informa??es para c?lculo da % explicada
@@ -104,7 +106,7 @@ tabela_var
 
 
 # Scree plot 2
-require(tidyverse)
+#p_load(tidyverse)
 
 ggplot(tabela_var, aes(x=x, y=auto)) +
   scale_x_continuous(n.breaks=nvar)+
@@ -148,10 +150,14 @@ hist(escores$MR1)
 
 fat1=dados[,1:9]
 
-a=alpha(fat1)
+a=psych::alpha(fat1,check.keys=T)
 
 summary(a)
 a
+
+b=omega(fat1)
+summary(b)
+b
 
 # Escala para fator 2
 
@@ -161,6 +167,11 @@ a=alpha(fat2)
 summary(a)
 a
 
+b=omega(fat2)
+summary(b)
+b
+
+
 # Escala para fator 3
 
 fat3=dados[,14:16]
@@ -169,15 +180,24 @@ a=alpha(fat3, check.keys = TRUE)
 summary(a)
 a
 
+b=omega(fat3)
+summary(b)
+b
+
+# Geral
+
+a=alpha(dados, check.keys = TRUE)
+summary(a)
+a
+
+b=omega(dados)
+summary(b)
+b
+
 ######################################################################
 
 # An?lise Fatorial Confirmat?ria
-
-install.packages("semTools")
-require(lavaan)
-require(semPlot)
-require(semTools)
-require(corrplot)
+p_load(semTools,lavaan,semPlot,corrplot)
 
 # Covari?ncia
 
